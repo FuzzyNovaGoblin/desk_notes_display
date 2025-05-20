@@ -40,10 +40,13 @@ esp-wifi = { version = "0.13.0", features = [
   "esp-alloc",
   "esp32c3",
   "log",
-  "wifi",
+  "wifi"
 ] }
-heapless = { version = "0.8.0", default-features = false }
+heapless = { version = "0.8.0", default-features = true, features = ["ufmt"] }
 static_cell = { version = "2.1.0", features = ["nightly"] }
+esp-println = { version = "0.13.1", features = ["esp32c3", "log"] }
+embassy-futures = "0.1.1"
+esp-backtrace = { version = "0.15.1", features = ["esp32c3", "panic-handler", "println"] }
 
 [profile.dev]
 # Rust debug is too slow.

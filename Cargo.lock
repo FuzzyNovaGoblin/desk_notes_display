@@ -140,13 +140,16 @@ version = "0.1.0"
 dependencies = [
  "critical-section",
  "embassy-executor",
+ "embassy-futures",
  "embassy-net",
  "embassy-time",
  "embedded-io",
  "embedded-io-async",
  "esp-alloc",
+ "esp-backtrace",
  "esp-hal",
  "esp-hal-embassy",
+ "esp-println",
  "esp-wifi",
  "heapless",
  "smoltcp",
@@ -417,6 +420,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "esp-backtrace"
+version = "0.15.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e4cd70abe47945c9116972781b5c05277ad855a5f5569fe2afd3e2e61a103cc0"
+dependencies = [
+ "esp-build",
+ "esp-println",
+]
+
+[[package]]
 name = "esp-build"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -530,6 +543,18 @@ dependencies = [
  "basic-toml",
  "serde",
  "strum 0.26.3",
+]
+
+[[package]]
+name = "esp-println"
+version = "0.13.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "960703930f9f3c899ddedd122ea27a09d6a612c22323157e524af5b18876448e"
+dependencies = [
+ "critical-section",
+ "esp-build",
+ "log",
+ "portable-atomic",
 ]
 
 [[package]]
@@ -668,6 +693,7 @@ dependencies = [
  "hash32",
  "portable-atomic",
  "stable_deref_trait",
+ "ufmt-write",
 ]
 
 [[package]]
