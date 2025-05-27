@@ -1,9 +1,12 @@
 {
-   "rust-analyzer.cargo.allTargets": false,
-  "rust-analyzer.cargo.target": "riscv32imc-unknown-none-elf",
-  "rust-analyzer.check.extraEnv": {
-     "SSID": "",
-     "PASSWORD": "",
-     "IPADDR": ""
-  },
+    "files.associations": {
+        "array": "cpp",
+        "deque": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp"
+    }
 }
