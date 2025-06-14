@@ -1,12 +1,15 @@
 use std::fs;
-
 use axum::{Router, routing::get};
+
+use crate::config::*;
+
+mod config;
 
 #[tokio::main]
 async fn main() {
     let app = Router::new().route("/", get(handler));
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:7272").await.unwrap();
+    let listener = tokio::net::TcpListener::bind(SERVER_URL).await.unwrap();
 
     println!("listening on http://{}", listener.local_addr().unwrap());
 
@@ -14,10 +17,7 @@ async fn main() {
 }
 
 async fn handler() -> String {
-    fs::read_to_string(format!(
-        "{}/obsidian/fuz-vault/General/TODO.md",
-        env!("HOME")
-    ))
+    fs::read_to_string(file_path())
     .unwrap()
     .replace("\x09", "  ")
     .lines()
