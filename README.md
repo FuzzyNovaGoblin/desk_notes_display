@@ -16,7 +16,7 @@ I do plan on making another version to go on a fridge in the future.
 ### Software
 
 - [platformIO](https://platformio.org/) (or build the firmware some other way)
-- [rust](https://www.rust-lang.org/) (to compile and the webserver)
+- [rust](https://www.rust-lang.org/) (to compile and run the webserver)
 
 ### Tools
 
