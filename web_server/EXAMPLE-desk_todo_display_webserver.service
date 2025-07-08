@@ -1,0 +1,25 @@
+# actual file goes in /etc/systemd/system
+# update instances of `USER` to be the user you want to run this
+# also update `ExecStart` to be the path of the executable
+# the given path is where it will be if installed with cargo by USER
+
+
+[Unit]
+Description=hosts a note file as a web server to be read by `Desk TODO Display`
+After=multi-user.target
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/home/USER/.cargo/bin/desk_todo_display_webserver
+User=USER
+Group=USER
+Type=idle
+Restart=on-abnormal
+RestartSec=15
+RestartForceExitStatus=1
+RestartForceExitStatus=26
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target
