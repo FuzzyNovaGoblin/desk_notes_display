@@ -59,22 +59,23 @@ async fn handler() -> String {
                 if under_todo_header == UnderTodoCase::Yes {
                     under_todo_header = UnderTodoCase::Past;
                     false
+                } else if HEADER_REGEX
+                    .get()
+                    .unwrap()
+                    .captures(l)
+                    .unwrap()
+                    .name("todo_header")
+                    .is_some()
+                {
+                    under_todo_header = UnderTodoCase::Yes;
+                    false
                 } else {
-                    if HEADER_REGEX
-                        .get()
-                        .unwrap()
-                        .captures(l)
-                        .unwrap()
-                        .name("todo_header")
-                        .is_some()
-                    {
-                        under_todo_header = UnderTodoCase::Yes
-                    }
                     true
                 }
             } else if let Some(caps) = TASK_REGEX.get().unwrap().captures(l) {
                 caps.name("checked")
-                    .is_some_and(|c| c.as_str().trim().is_empty()) || caps.name("checked").is_none()
+                    .is_some_and(|c| c.as_str().trim().is_empty())
+                    || caps.name("checked").is_none()
             } else {
                 true
             }
