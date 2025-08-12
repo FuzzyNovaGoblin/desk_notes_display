@@ -36,7 +36,8 @@ void displayText(String dispText) {
   int16_t tbx, tby;
   uint16_t tbw, tbh;
   display.getTextBounds(dispText, 0, 0, &tbx, &tby, &tbw, &tbh);
-  uint16_t x, y = 0;
+  uint16_t x = 0;
+  uint16_t y = 11;
   display.setFullWindow();
   display.firstPage();
   do {
