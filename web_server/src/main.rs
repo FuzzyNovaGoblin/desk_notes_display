@@ -9,6 +9,7 @@ mod config;
 static TAB_REGEX: OnceLock<Regex> = OnceLock::<Regex>::new();
 static TASK_REGEX: OnceLock<Regex> = OnceLock::<Regex>::new();
 static HEADER_REGEX: OnceLock<Regex> = OnceLock::<Regex>::new();
+static BULLET_REGEX: OnceLock<Regex> = OnceLock::<Regex>::new();
 
 #[tokio::main]
 async fn main() {
@@ -17,7 +18,8 @@ async fn main() {
         Regex::new(r#"\s*(?:[-\+] (?<checkbox>\[(?<checked>.)])?)\s?(?<message>.*)"#).unwrap()
     });
     HEADER_REGEX
-        .get_or_init(|| Regex::new(r#"(?<todo_header>^# TODO)\s*$|(^# [A-Za-z0-9\s]*$)"#).unwrap());
+    .get_or_init(|| Regex::new(r#"(?<todo_header>^# TODO)\s*$|(^# [A-Za-z0-9\s]*$)"#).unwrap());
+    BULLET_REGEX.get_or_init(|| Regex::new(r"(?<indent>\s*)[-\+] (?<checkbox>\[.\] )?").unwrap());
 
     let app = Router::new().route("/", get(handler));
 
@@ -42,12 +44,15 @@ async fn handler() -> String {
         .unwrap()
         .replace("\x09", "  ")
         .lines()
-        .map(|l| TAB_REGEX.get().unwrap().replace_all(l, "$1").to_string())
+        .map(|l| TAB_REGEX.get()
+        .unwrap()
+        .replace_all(l, "$1")
+        .to_string())
         .map(|l| {
-            if l.len() <= 36 {
+            if l.len() <= 40 {
                 l
             } else {
-                l[0..36].to_owned()
+                l.chars().take(40).collect()
             }
         })
         .filter(|l| {
@@ -79,6 +84,27 @@ async fn handler() -> String {
             } else {
                 true
             }
+        })
+        .map(|line|
+        {
+            let caps = match BULLET_REGEX.get().unwrap().captures(&line){
+                Some(v) => v,
+                None => return line,
+            };
+            let spaces = match caps.name("indent"){
+                Some(v) => v.len()/2,
+                None => 0,
+            };
+            let bullet = match caps.name("checkbox"){
+                // Some(_) => '\u{0220}',
+                // Some(_) => '\u{0254}',
+                // Some(_) => '\u{007F}',
+                // Some(_) => '\u{25CB}',
+                Some(_)=>"[]",
+                None => "-",
+            };
+            BULLET_REGEX.get().unwrap().replace(&line, format!("{}{bullet}", (0..spaces).map(|_|' ').collect::<String>())).to_string()
+
         })
         .collect::<Vec<_>>()
         .join("\n")
