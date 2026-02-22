@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <Fonts/FreeMonoBold9pt7b.h>
+#include <Fonts/FreeMonoBold12pt7b.h>
 #include <GxEPD2_3C.h>
 #include <GxEPD2_4C.h>
 #include <GxEPD2_7C.h>
@@ -9,6 +9,8 @@
 
 #include "GxEPD2_display_selection_new_style.h"
 #include "config.h"
+
+void displayText(String);
 
 WiFiMulti wifiMulti;
 String content;
@@ -25,27 +27,9 @@ void setup() {
 
   wifiMulti.addAP(WIFI_SSID, WIFI_PW);
   display.init(115200, true, 2, false);
+  delay(500);
 }
 
-void displayText(String dispText) {
-  Serial.printf("display:\n%s\n", dispText);
-  content = dispText;
-  display.setRotation(2);
-  display.setFont(&FreeMonoBold9pt7b);
-  display.setTextColor(GxEPD_BLACK);
-  int16_t tbx, tby;
-  uint16_t tbw, tbh;
-  display.getTextBounds(dispText, 0, 0, &tbx, &tby, &tbw, &tbh);
-  uint16_t x = 0;
-  uint16_t y = 11;
-  display.setFullWindow();
-  display.firstPage();
-  do {
-    display.fillScreen(GxEPD_WHITE);
-    display.setCursor(x, y);
-    display.print(dispText);
-  } while (display.nextPage());
-}
 
 void loop() {
   // wait for WiFi connection
@@ -80,3 +64,23 @@ void loop() {
     delay(2000);
   }
 };
+
+void displayText(String dispText) {
+  Serial.printf("display:\n%s\n", dispText);
+  content = dispText;
+  display.setRotation(2);
+  display.setFont(&FreeMonoBold12pt7b);
+  display.setTextColor(GxEPD_BLACK);
+  int16_t tbx, tby;
+  uint16_t tbw, tbh;
+  display.getTextBounds(dispText, 0, 0, &tbx, &tby, &tbw, &tbh);
+  uint16_t x = 0;
+  uint16_t y = 15;
+  display.setFullWindow();
+  display.firstPage();
+  do {
+    display.fillScreen(GxEPD_WHITE);
+    display.setCursor(x, y);
+    display.print(dispText);
+  } while (display.nextPage());
+}

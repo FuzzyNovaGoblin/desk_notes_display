@@ -6,6 +6,8 @@ use crate::config::*;
 
 mod config;
 
+const SCREEN_CHAR_WIDTH:usize = 61;
+
 static TAB_REGEX: OnceLock<Regex> = OnceLock::<Regex>::new();
 static TASK_REGEX: OnceLock<Regex> = OnceLock::<Regex>::new();
 static HEADER_REGEX: OnceLock<Regex> = OnceLock::<Regex>::new();
@@ -48,10 +50,10 @@ async fn handler() -> String {
         .filter(|l| !l.trim().is_empty())
         .map(|l| TAB_REGEX.get().unwrap().replace_all(l, "$1").to_string())
         .map(|l| {
-            if l.len() <= 40 {
+            if l.len() <= SCREEN_CHAR_WIDTH {
                 l
             } else {
-                l.chars().take(40).collect()
+                l.chars().take(SCREEN_CHAR_WIDTH).collect()
             }
         })
         .filter(|l| {
