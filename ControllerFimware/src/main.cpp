@@ -30,7 +30,7 @@ void setup() {
 void displayText(String dispText) {
   Serial.printf("display:\n%s\n", dispText);
   content = dispText;
-  display.setRotation(0);
+  display.setRotation(2);
   display.setFont(&FreeMonoBold9pt7b);
   display.setTextColor(GxEPD_BLACK);
   int16_t tbx, tby;
