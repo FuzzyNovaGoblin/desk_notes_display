@@ -4,6 +4,6 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-axum = "0.8.4"
-regex = "1.11.1"
-tokio = { version = "1.45.1", features = ["rt-multi-thread"] }
+axum = "0.8.9"
+regex = "1.12.3"
+tokio = { version = "1.52.3", features = ["rt-multi-thread"] }
